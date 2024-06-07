@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROBAR API REST</title>
+    <style>
+      html {
+        font-family: Arial, sans-serif;
+        background-color: black;
+        color: white;
+      }
+
+      .image {
+        width: 75px;
+        height: 75px;
+      }
+
+      .image img {
+        width: 100%;
+        height: 100%;
+      }
+
+      h1 {
+        font-size: 16px;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+      }
+    </style>
+    <script type="module">
+      // Fetch glasses and render them on the page
+      fetch("http://localhost:5000/glasses")
+        .then((response) => response.json())
+        .then((glasses) => {
+          const html = glasses
+            .map((glass) => {
+              return `
+          <div class="glass" data-id="${glass.id}">
+            <div class="image">
+              <img src="${glass.image}" alt="${glass.brand}" />
+            </div>
+            <h1>${glass.brand}</h1>
+            <p>${glass.description}</p>
+            <button>Eliminar</button>
+          </div>
+          `;
+            })
+            .join("");
+          document.querySelector("main").innerHTML = html;
+        })
+        .catch((error) => console.log(error));
+
+      // Add event listener for delete buttons
+      document.querySelector("main").addEventListener("click", (event) => {
+        if (event.target.tagName === "BUTTON") {
+          const glassDiv = event.target.closest(".glass");
+          const id = glassDiv.dataset.id;
+
+          fetch(`http://localhost:5000/glasses/${id}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (response.ok) {
+                glassDiv.remove();
+              } else {
+                console.log("Failed to delete the item");
+              }
+            })
+            .catch((error) => console.log(error));
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <main></main>
+  </body>
+</html>
