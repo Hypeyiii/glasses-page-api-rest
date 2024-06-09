@@ -1,0 +1,25 @@
+### RECUPERAR TODOS MIS USUARIOS
+GET http://localhost:5000/users
+
+### RECUPERAR UN USUARIO POR SU ID
+GET http://localhost:5000/users/4f2e1e38-7dbd-4bd7-8a20-94602cd95126
+
+### RECUPERAR UN USUARIO POR SU BUSQUEDA
+GET http://localhost:5000/users?search=isaacfrias868@gmail.com
+
+### RECUPERAR UN USUARIO POR SU EMAIL
+GET http://localhost:5000/users/email/isaacfrias868@gmail.com
+
+### CREAR UN NUEVO USUARIO
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+      "email": "fridis@gmail.com",
+      "password": "123456",
+      "username": "fridis",
+      "role": "Admin"
+}
+
+### ELIMINAR UN USUARIO
+DELETE http://localhost:5000/users/2dd6494d-377f-42bc-9009-3b806328c9fe
