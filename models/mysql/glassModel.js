@@ -1,18 +1,7 @@
 //MODELO SACADO DE MI BASE DE DATOS EN MYSQL
-import mysql from "mysql2/promise";
 import { randomUUID } from "node:crypto";
 import "dotenv/config";
-
-const DEFAULT_CONFIG = {
-  host: process.env.HOST,
-  user: process.env.USER,
-  port: process.env.PORT,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
-};
-const connectionString = process.env.DATABASE_URL ?? DEFAULT_CONFIG;
-
-const connection = await mysql.createConnection(connectionString);
+import { connection } from "../../db.js";
 
 export class GlassModel {
   static async getAll({ filter }) {
