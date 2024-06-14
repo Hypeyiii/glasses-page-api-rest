@@ -12,17 +12,18 @@ POST http://localhost:5000/glasses
 Content-Type: application/json
 
 {
-      "brand": "Versace",
-      "description": "Sunglasses with a black frame and black lenses",
+      "id": 121,
+      "brand": "Oakley",
+      "price": 200,
       "category": "sol",
-      "genre": "hombre",
-      "shape": "squared",
-      "color": "black",
-      "price": 60,
-      "image": "https://assets.sunglasshut.com/is/image/LuxotticaRetail/8053672947397__STD__shad__qt.png?impolicy=SGH_bgtransparent&width=1000",
+      "genre": "mujer",
+      "shape": "heart",
+      "color": "rainbow",
+      "image": "https://assets.theplace.com/image/upload/t_pdp_img_m,f_auto,q_auto/v1/ecom/assets/products/tcp/3038342/3038342_BQ.png",
+      "description": "Lentes de sol Oakley",
       "quantity": 1,
       "stock": 10
-}
+    }
 
 ### ACTUALIZAR UN PRODUCTO
 PUT http://localhost:5000/glasses/79af640b-a448-46db-a255-85b91c2336d2
@@ -42,4 +43,4 @@ Content-Type: application/json
       }
 
 ### ELIMINAR UN PRODUCTO
-DELETE http://localhost:5000/glasses/56ba828d-ac4e-4e87-b839-05dae398fabd
+DELETE http://localhost:5000/glasses/79af640b-a448-46db-a255-85b91c2336d2

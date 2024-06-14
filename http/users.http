@@ -2,7 +2,7 @@
 GET http://localhost:5000/users
 
 ### RECUPERAR UN USUARIO POR SU ID
-GET http://localhost:5000/users/4f2e1e38-7dbd-4bd7-8a20-94602cd95126
+GET http://localhost:5000/users/b655b696-9008-4ecc-aac9-65a6bebeb54e
 
 ### RECUPERAR UN USUARIO POR SU BUSQUEDA
 GET http://localhost:5000/users?search=isaacfrias868@gmail.com
@@ -11,15 +11,29 @@ GET http://localhost:5000/users?search=isaacfrias868@gmail.com
 GET http://localhost:5000/users/email/isaacfrias868@gmail.com
 
 ### CREAR UN NUEVO USUARIO
-POST http://localhost:5000/users
+POST http://localhost:5000/users/register
 Content-Type: application/json
 
 {
       "email": "fridis@gmail.com",
       "password": "123456",
-      "username": "fridis",
-      "role": "Admin"
+      "username": "fridis"
+}
+
+### INICIAR SESION CON UN USUARIO
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+      "email": "fridis@gmail.com",
+      "password": "123456"
 }
 
 ### ELIMINAR UN USUARIO
 DELETE http://localhost:5000/users/2dd6494d-377f-42bc-9009-3b806328c9fe
+
+### SALIR DE LA SESION
+GET http://localhost:5000/users/logout
+
+### VERIFICAR SI EL USUARIO TIENE LA TOKEN
+GET http://localhost:5000/users/verify
