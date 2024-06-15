@@ -75,7 +75,6 @@ export class GlassModel {
     }
   }
 
-  //TODO
   static async update({ id, input }) {
     const {
       brand,
@@ -101,25 +100,23 @@ export class GlassModel {
         throw new Error("Product not found");
       }
 
-      // Actualizar el producto
       await connection.query(
         `UPDATE Products SET brand = ?, price = ?, category = ?, genre = ?, shape = ?, color = ?, image = ?, description = ?, quantity = ?, stock = ? WHERE id = ?`,
         [
-          brand ?? "brand",
-          price ?? "price",
-          category ?? "category",
-          genre ?? "genre",
-          shape ?? "shape",
-          color ?? "color",
-          image ?? "image",
-          description ?? "description",
-          quantity ?? "quantity",
-          stock ?? "stock",
+          brand,
+          price,
+          category,
+          genre,
+          shape,
+          color,
+          image,
+          description,
+          quantity,
+          stock,
           id,
         ]
       );
 
-      // Obtener el producto actualizado
       const [updatedProduct] = await connection.query(
         "SELECT * FROM Products WHERE id = ?",
         [id]
