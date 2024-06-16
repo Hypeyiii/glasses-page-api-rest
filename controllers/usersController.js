@@ -112,8 +112,12 @@ export class UserController {
 
       res.json({ message: "Usuario logueado", user: safeUser });
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      res.status(401).json({ message: "Credenciales inválidas" });
+      if (error.message === "Credenciales inválidas") {
+        return res.status(401).json({ message: "Credenciales inválidas" });
+      }
+      if (error.message === "Este correo no está registrado") {
+        return res.status(404).json({ message: "Correo no registrado" });
+      }
     }
   }
 
