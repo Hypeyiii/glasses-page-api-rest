@@ -2,8 +2,7 @@
 import { connection } from "../../db.js";
 import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
-import { SALT_ROUNDS } from "../../config.js";
-
+import "dotenv/config";
 export class UserModel {
   static async getAll({ search }) {
     if (search) {
@@ -71,7 +70,7 @@ export class UserModel {
       }
 
       // Hasheo de la contraseña
-      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+      const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
 
       // Inserción del nuevo usuario en la base de datos
       await connection.query(

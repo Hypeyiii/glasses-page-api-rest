@@ -1,7 +1,7 @@
 import { UserModel } from "../models/mysql/userModel.js";
 import { validateUser } from "../schemas/user.js";
 import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "../config.js";
+import "dotenv/config";
 
 export class UserController {
   static async getAll(req, res) {
@@ -65,7 +65,7 @@ export class UserController {
         {
           id: user.id,
         },
-        TOKEN_SECRET,
+        process.env.TOKEN_SECRET,
         { expiresIn: "1h" }
       );
 
@@ -98,7 +98,7 @@ export class UserController {
         {
           id: user.id,
         },
-        TOKEN_SECRET,
+        process.env.TOKEN_SECRET,
         { expiresIn: "1h" }
       );
 
@@ -150,7 +150,7 @@ export class UserController {
     }
 
     try {
-      const data = jwt.verify(token, TOKEN_SECRET);
+      const data = jwt.verify(token, process.env.TOKEN_SECRET);
 
       res.json({ data });
     } catch (error) {
