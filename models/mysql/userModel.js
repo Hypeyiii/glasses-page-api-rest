@@ -119,6 +119,48 @@ export class UserModel {
     }
   }
 
+  static async update({ id, input }) {
+    // Destructure input
+    const { email, password, username, role } = input;
+
+    try {
+      // Check if user exists
+      const [users] = await connection.query(
+        "SELECT * FROM Users WHERE id = ?",
+        [id]
+      );
+      if (users.length === 0) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      let hashedPassword = users[0].password;
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 10);
+      }
+
+      // Update user details
+      await connection.query(
+        "UPDATE Users SET email = ?, password = ?, username = ?, role = ? WHERE id = ?",
+        [email, hashedPassword, username, role, id]
+      );
+
+      // Fetch the updated user details
+      const [updatedUsers] = await connection.query(
+        "SELECT * FROM Users WHERE id = ?",
+        [id]
+      );
+      if (updatedUsers.length === 0) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      return updatedUsers[0];
+    } catch (error) {
+      // Handle potential errors
+      console.error("Error updating user:", error.message);
+      throw new Error("Error updating user");
+    }
+  }
+
   static async logout() {}
 
   static async verify() {}

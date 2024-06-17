@@ -29,6 +29,17 @@ Content-Type: application/json
       "password": "frias3108"
 }
 
+### ACTUALIZAR UN USUARIO
+PUT http://localhost:5000/users/b655b696-9008-4ecc-aac9-65a6bebeb54e
+Content-Type: application/json
+
+{
+      "email": "isaacfrias868@gmail.com",
+      "password": "frias3108",
+      "username": "isaacfrias",
+      "role": "Admin"
+}
+
 ### ELIMINAR UN USUARIO
 DELETE http://localhost:5000/users/ab1495e4-2b1c-4661-a57b-477394cc2b42
 

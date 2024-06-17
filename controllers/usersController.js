@@ -158,4 +158,24 @@ export class UserController {
       res.status(401).json({ message: "Token inválido" });
     }
   }
+
+  static async update(req, res) {
+    const { id } = req.params;
+    const input = req.body;
+
+    try {
+      await UserModel.update({ id, input });
+      const user = await UserModel.getById({ id });
+      if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      res.json(user);
+    } catch (error) {
+      if (error.message === "Usuario no encontrado") {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      console.error(`Error al actualizar usuario con id ${id}:`, error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
 }
