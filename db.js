@@ -1,5 +1,4 @@
 // CONEXIÓN A MI BASE DE DATOS EN MYSQL
-import "dotenv/config";
 import mysql from "mysql2/promise";
 import { DATABASE_URL, HOST, USER, DB_PORT, PASSWORD, DATABASE } from "./config.js";
 
