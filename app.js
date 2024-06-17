@@ -4,9 +4,9 @@ import { glassesRouter } from "./routes/glasses.js";
 import { userRouter } from "./routes/user.js";
 import { stripeRouter } from "./routes/stripe.js";
 import cookieParser from "cookie-parser";
+import { PORT } from "./config.js";
 
 const app = express();
-const PORT = process.env.PORT ?? 5000;
 
 app.use(json());
 app.use(cookieParser());
