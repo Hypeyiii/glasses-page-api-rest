@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const SALT_ROUNDS = process.env.SALT_ROUNDS;
 
 export const TOKEN_SECRET = process.env.TOKEN_SECRET;
@@ -9,4 +11,5 @@ export const HOST = process.env.HOST || "localhost";
 export const USER = process.env.USER || "root";
 export const PASSWORD = process.env.PASSWORD || "frias3108";
 export const DATABASE = process.env.DATABASE || "glasses-database";
+
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
