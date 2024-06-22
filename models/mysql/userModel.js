@@ -120,11 +120,9 @@ export class UserModel {
   }
 
   static async update({ id, input }) {
-    // Destructure input
     const { email, password, username, role } = input;
 
     try {
-      // Check if user exists
       const [users] = await connection.query(
         "SELECT * FROM Users WHERE id = ?",
         [id]

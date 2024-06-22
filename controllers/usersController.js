@@ -77,6 +77,32 @@ export class UserController {
 
       res.json({ message: "Usuario creado", user });
     } catch (error) {
+      if (error.message === "El email no puede estar vacío") {
+        return res
+          .status(401)
+          .json({ message: "El email no puede estar vacío" });
+      }
+      if (error.message === "La contraseña no puede estar vacía") {
+        return res
+          .status(404)
+          .json({ message: "La contraseña no puede estar vacía" });
+      }
+      if (error.message === "El nombre de usuario no puede estar vacío") {
+        return res
+          .status(401)
+          .json({ message: "El nombre de usuario no puede estar vacío" });
+      }
+      if (error.message === "El correo electrónico ya está en uso") {
+        return res
+          .status(400)
+          .json({ message: "El correo electrónico ya está en uso" });
+      }
+      if (error.message === "El nombre de usuario ya está en uso") {
+        return res
+          .status(400)
+          .json({ message: "El nombre de usuario ya está en uso" });
+      }
+      
       console.error("Error al registrar usuario:", error);
       res.status(500).json({ message: "Error interno del servidor" });
     }
