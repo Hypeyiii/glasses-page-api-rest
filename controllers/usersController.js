@@ -94,17 +94,13 @@ export class UserController {
         password: req.body.password,
       });
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-        },
-        process.env.TOKEN_SECRET,
-        { expiresIn: "1h" }
-      );
+      const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
       });
 
@@ -118,6 +114,16 @@ export class UserController {
       if (error.message === "Este correo no está registrado") {
         return res.status(404).json({ message: "Correo no registrado" });
       }
+      if (error.message === "El correo electrónico o contraseña no coindicen") {
+        return res
+          .status(401)
+          .json({ message: "El correo electrónico o contraseña no coindicen" });
+      }
+      if (error.message === "Ingrese su contraseña") {
+        return res.status(400).json({ message: "Ingrese su contraseña" });
+      }
+      console.error(error);
+      return res.status(500).json({ message: "Error en el servidor" });
     }
   }
 
