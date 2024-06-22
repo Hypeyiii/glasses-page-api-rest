@@ -117,26 +117,25 @@ export class UserController {
         secure: process.env.NODE_ENV === "production",
       });
 
-      const safeUser = { ...user, password: undefined };
+      const { password, ...safeUser } = user;
 
       res.json({ message: "Usuario logueado", user: safeUser });
     } catch (error) {
-      if (error.message === "Credenciales inválidas") {
-        return res.status(401).json({ message: "Credenciales inválidas" });
+      const errorMessages = {
+        "Credenciales inválidas": 401,
+        "Este correo no está registrado": 404,
+        "El correo electrónico o contraseña no coindicen": 401,
+        "Ingrese su contraseña": 400,
+      };
+
+      const statusCode = errorMessages[error.message] || 500;
+      const errorMessage = error.message || "Error en el servidor";
+
+      if (statusCode === 500) {
+        console.error("Error en el servidor:", error);
       }
-      if (error.message === "Este correo no está registrado") {
-        return res.status(404).json({ message: "Correo no registrado" });
-      }
-      if (error.message === "El correo electrónico o contraseña no coindicen") {
-        return res
-          .status(401)
-          .json({ message: "El correo electrónico o contraseña no coindicen" });
-      }
-      if (error.message === "Ingrese su contraseña") {
-        return res.status(400).json({ message: "Ingrese su contraseña" });
-      }
-      console.error(error);
-      return res.status(500).json({ message: "Error en el servidor" });
+
+      res.status(statusCode).json({ message: errorMessage });
     }
   }
 

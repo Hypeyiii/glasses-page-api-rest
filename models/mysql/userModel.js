@@ -91,12 +91,8 @@ export class UserModel {
       [email]
     );
 
-    if (!user) {
+    if (!user || user.length === 0) {
       throw new Error("Este correo no está registrado");
-    }
-
-    if (user.length === 0) {
-      throw new Error("Ingrese su contraseña");
     }
 
     const userPassword = user[0].password;
