@@ -57,7 +57,6 @@ export class UserController {
     if (!result.success) {
       return res.status(400).json({ message: "No se pudo validar el usuario" });
     }
-
     try {
       await UserModel.register({ input: req.body });
       const user = await UserModel.getByEmail({ email: req.body.email });
@@ -77,34 +76,22 @@ export class UserController {
 
       res.json({ message: "Usuario creado", user });
     } catch (error) {
-      if (error.message === "El email no puede estar vacío") {
-        return res
-          .status(401)
-          .json({ message: "El email no puede estar vacío" });
+      const errorMessages = {
+        "El email no puede estar vacío": 401,
+        "La contraseña no puede estar vacía": 404,
+        "El nombre de usuario no puede estar vacío": 401,
+        "El correo electrónico ya está en uso": 400,
+        "El nombre de usuario ya está en uso": 400,
+      };
+
+      const statusCode = errorMessages[error.message] || 500;
+      const errorMessage = error.message || "Error interno del servidor";
+
+      if (statusCode === 500) {
+        console.error("Error al registrar usuario:", error);
       }
-      if (error.message === "La contraseña no puede estar vacía") {
-        return res
-          .status(404)
-          .json({ message: "La contraseña no puede estar vacía" });
-      }
-      if (error.message === "El nombre de usuario no puede estar vacío") {
-        return res
-          .status(401)
-          .json({ message: "El nombre de usuario no puede estar vacío" });
-      }
-      if (error.message === "El correo electrónico ya está en uso") {
-        return res
-          .status(400)
-          .json({ message: "El correo electrónico ya está en uso" });
-      }
-      if (error.message === "El nombre de usuario ya está en uso") {
-        return res
-          .status(400)
-          .json({ message: "El nombre de usuario ya está en uso" });
-      }
-      
-      console.error("Error al registrar usuario:", error);
-      res.status(500).json({ message: "Error interno del servidor" });
+
+      res.status(statusCode).json({ message: errorMessage });
     }
   }
 
