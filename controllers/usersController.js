@@ -3,9 +3,55 @@ import { validateUser } from "../schemas/user.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const isProduction = process.env.NODE_ENV === "production";
-
 export class UserController {
+  static async getAll(req, res) {
+    const { search } = req.query;
+    try {
+      const users = await UserModel.getAll({ search });
+      if (users.length === 0) {
+        return res.status(404).json({
+          message: "No se encontró ningún usuario",
+        });
+      }
+      res.json(users);
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
+  static async getById(req, res) {
+    const { id } = req.params;
+    try {
+      const user = await UserModel.getById({ id });
+      if (!user) {
+        return res.status(404).json({
+          message: "Usuario no encontrado",
+        });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error(`Error al obtener usuario por id ${id}:`, error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
+  static async getByEmail(req, res) {
+    const { email } = req.params;
+    try {
+      const user = await UserModel.getByEmail({ email });
+      if (!user) {
+        return res.status(404).json({
+          message: "Usuario no encontrado",
+        });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error(`Error al obtener usuario por email ${email}:`, error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
   static async register(req, res) {
     const result = validateUser(req.body);
     if (!result.success) {
@@ -121,6 +167,47 @@ export class UserController {
     } catch (error) {
       console.error("Error al verificar el token:", error);
       res.status(401).json({ message: "Token inválido" });
+    }
+  }
+
+  static async logout(req, res) {
+    try {
+      res.clearCookie("access_token");
+      res.json({ message: "Usuario deslogueado" });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
+  static async delete(req, res) {
+    const { id } = req.params;
+    try {
+      await UserModel.delete({ id });
+      res.json({ message: "Usuario eliminado" });
+    } catch (error) {
+      console.error(`Error al eliminar usuario con id ${id}:`, error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
+  static async update(req, res) {
+    const { id } = req.params;
+    const input = req.body;
+
+    try {
+      await UserModel.update({ id, input });
+      const user = await UserModel.getById({ id });
+      if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      res.json(user);
+    } catch (error) {
+      if (error.message === "Usuario no encontrado") {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      console.error(`Error al actualizar usuario con id ${id}:`, error);
+      res.status(500).json({ message: "Error interno del servidor" });
     }
   }
 }
