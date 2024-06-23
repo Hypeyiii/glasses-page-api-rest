@@ -3,6 +3,8 @@ import { validateUser } from "../schemas/user.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export class UserController {
   static async getAll(req, res) {
     const { search } = req.query;
