@@ -67,7 +67,7 @@ export class UserController {
       res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: true,
-        secure: true,
+        secure: false,
       });
 
       res.json({ message: "Usuario creado", user });
@@ -110,7 +110,7 @@ export class UserController {
       res.cookie("access_token", token, {
         httpOnly: true,
         sameSite: true,
-        secure: true,
+        secure: false,
       });
 
       const { password, ...safeUser } = user;
