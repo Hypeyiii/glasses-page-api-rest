@@ -66,8 +66,8 @@ export class UserController {
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: true,
-        secure: false,
+        sameSite: "None",
+        secure: process.env.NODE_ENV === "production",
       });
 
       res.json({ message: "Usuario creado", user });
@@ -109,8 +109,8 @@ export class UserController {
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: true,
-        secure: false,
+        sameSite: "None",
+        secure: process.env.NODE_ENV === "production",
       });
 
       const { password, ...safeUser } = user;
