@@ -72,7 +72,7 @@ export class UserController {
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "strict",
         secure: isProduction,
       });
 
@@ -115,7 +115,7 @@ export class UserController {
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "strict",
         secure: isProduction,
       });
 
@@ -145,7 +145,7 @@ export class UserController {
     try {
       res.clearCookie("access_token", {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: "strict",
         secure: isProduction,
       });
       res.json({ message: "Usuario deslogueado" });
