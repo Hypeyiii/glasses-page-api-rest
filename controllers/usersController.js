@@ -1,9 +1,9 @@
 import { UserModel } from "../models/mysql/userModel.js";
 import { validateUser } from "../schemas/user.js";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { NODE_ENV, TOKEN_SECRET } from "../config.js";
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = NODE_ENV === "production";
 
 export class UserController {
   static async getAll(req, res) {
@@ -66,7 +66,7 @@ export class UserController {
         {
           id: user.id,
         },
-        process.env.TOKEN_SECRET,
+        TOKEN_SECRET,
         { expiresIn: "1h" }
       );
 
@@ -109,7 +109,7 @@ export class UserController {
         password: req.body.password,
       });
 
-      const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
+      const token = jwt.sign({ id: user.id }, TOKEN_SECRET, {
         expiresIn: "1h",
       });
 
@@ -163,7 +163,7 @@ export class UserController {
     }
 
     try {
-      const data = jwt.verify(token, process.env.TOKEN_SECRET);
+      const data = jwt.verify(token, TOKEN_SECRET);
 
       res.json({ data });
     } catch (error) {
