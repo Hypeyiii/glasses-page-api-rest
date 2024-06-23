@@ -60,17 +60,13 @@ export class UserController {
     try {
       await UserModel.register({ input: req.body });
       const user = await UserModel.getByEmail({ email: req.body.email });
-      const token = jwt.sign(
-        {
-          id: user.id,
-        },
-        process.env.TOKEN_SECRET,
-        { expiresIn: "1h" }
-      );
+      const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
 
       res.cookie("access_token", token, {
         httpOnly: true,
-        sameSite: "None",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
       });
 
