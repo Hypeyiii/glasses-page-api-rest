@@ -35,6 +35,8 @@ export class OrderModel {
       if (!userId) throw new Error("User ID is required");
       if (!products) throw new Error("Products are required");
 
+      await connection.beginTransaction(); // Inicia la transacción
+
       await connection.query(
         "INSERT INTO Orders (id, userId, status, date) VALUES (?, ?, ?, ?)",
         [id, userId, status, date]
@@ -47,12 +49,15 @@ export class OrderModel {
         );
       }
 
+      await connection.commit();
+
       return { id, userId, status, date, products };
     } catch (error) {
+      await connection.rollback();
       throw new Error(error);
     }
   }
-
+  
   static async delete({ id }) {
     const [order] = await connection.query(
       "SELECT * FROM Orders WHERE id = ?",
