@@ -25,5 +25,10 @@ Content-Type: application/json
 
 ### RECUPERAR LOS DETALLES DE LA ORDEN POR SU ID
 GET http://localhost:5000/orders/products/123e4567-e89b-12d3-a456-426614174000
+
+### RECUPERAR TODOS LOS DETALLES DE LAS ORDENES
+GET http://localhost:5000/orders/products
+
 ### ELIMINAR UNA ORDEN POR SU ID
 DELETE http://localhost:5000/orders/607468d6-7c0a-4ef7-a41a-63c2674e70c1
+

@@ -13,4 +13,5 @@ ordersRouter.get(
   "/products/:orderId",
   OrderProductsController.getProductsByOrderId
 );
+ordersRouter.get("/products", OrderProductsController.getAll);
 ordersRouter.post("/", OrdersController.create);

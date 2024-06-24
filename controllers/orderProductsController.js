@@ -12,4 +12,13 @@ export class OrderProductsController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  static async getAll(req, res) {
+    try {
+      const products = await OrderProductModel.getAll();
+      res.status(200).json(products);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
