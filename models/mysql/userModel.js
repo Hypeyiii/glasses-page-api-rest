@@ -116,7 +116,7 @@ export class UserModel {
   }
 
   static async update({ id, input }) {
-    const { email, password, username, role } = input;
+    const { email, username, role } = input;
 
     try {
       const [users] = await connection.query(
@@ -127,18 +127,11 @@ export class UserModel {
         throw new Error("Usuario no encontrado");
       }
 
-      let hashedPassword = users[0].password;
-      if (password) {
-        hashedPassword = await bcrypt.hash(password, 10);
-      }
-
-      // Update user details
       await connection.query(
-        "UPDATE Users SET email = ?, password = ?, username = ?, role = ? WHERE id = ?",
-        [email, hashedPassword, username, role, id]
+        "UPDATE Users SET email = ?, username = ?, role = ? WHERE id = ?",
+        [email, username, role, id]
       );
 
-      // Fetch the updated user details
       const [updatedUsers] = await connection.query(
         "SELECT * FROM Users WHERE id = ?",
         [id]
@@ -149,7 +142,6 @@ export class UserModel {
 
       return updatedUsers[0];
     } catch (error) {
-      // Handle potential errors
       console.error("Error updating user:", error.message);
       throw new Error("Error updating user");
     }
